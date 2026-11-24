@@ -1,0 +1,83 @@
+============================================================
+  FLOOD PREDICTION SYSTEM - TEST DATA
+============================================================
+
+------------------------------------------------------------
+TEST 1 — FLOOD EXPECTED (Real data, Barisal, June 1949)
+------------------------------------------------------------
+Max Temp          : 34.4
+Min Temp          : 25.7
+Rainfall (log)    : 6.24
+Relative Humidity : 80
+Wind Speed (log)  : 0.97
+Cloud Coverage    : 5.6
+Bright Sunshine   : 4.07
+X_COR             : 536809.8
+Y_COR             : 510151.9
+LATITUDE          : 22.7
+LONGITUDE         : 90.36
+ALT (log)         : 1.61
+Period            : 1949.06
+Station Name      : Barisal
+
+Expected Result   : 🚨 Flood Likely
+
+------------------------------------------------------------
+TEST 2 — NO FLOOD EXPECTED (Real data, Barisal, Jan 1949)
+------------------------------------------------------------
+Max Temp          : 29.4
+Min Temp          : 12.3
+Rainfall (log)    : 0
+Relative Humidity : 68
+Wind Speed (log)  : 0.37
+Cloud Coverage    : 0.6
+Bright Sunshine   : 7.83
+X_COR             : 536809.8
+Y_COR             : 510151.9
+LATITUDE          : 22.7
+LONGITUDE         : 90.36
+ALT (log)         : 1.61
+Period            : 1949.01
+Station Name      : Barisal
+
+Expected Result   : ✅ No Flood Risk
+
+------------------------------------------------------------
+TEST 3 — BORDERLINE CASE (~0.49 probability)
+         (Real data, Barisal, May 1950)
+------------------------------------------------------------
+Max Temp          : 36.1
+Min Temp          : 25.5
+Rainfall (log)    : 4.48
+Relative Humidity : 78
+Wind Speed (log)  : 0.99
+Cloud Coverage    : 4.8
+Bright Sunshine   : 7.05
+X_COR             : 536809.8
+Y_COR             : 510151.9
+LATITUDE          : 22.7
+LONGITUDE         : 90.36
+ALT (log)         : 1.61
+Period            : 1950.05
+Station Name      : Barisal
+
+Expected Result   : Close call — probability near 0.49-0.55
+                    (This is a real flood row the model may
+                     be uncertain about due to moderate
+                     rainfall and mixed conditions)
+
+------------------------------------------------------------
+  NOTES FOR PRESENTATION
+------------------------------------------------------------
+- "Rainfall (log)" is log-transformed rainfall, not raw mm
+  e.g. 6.24 = ~512mm of rain, 4.48 = ~88mm, 0 = no rain
+- "ALT (log)" is log-transformed altitude (1.61 = ~5m above sea level)
+- "Period" format is YYYY.MM (e.g. 1949.06 = June 1949)
+- Cloud Coverage scale: 0-8 oktas (8 = fully overcast)
+- Bright Sunshine = hours of sunshine per day
+
+Key difference between flood and no-flood:
+  Rainfall log: 6.24 (flood) vs 0 (no flood)
+  Humidity:     80%  (flood) vs 68% (no flood)
+  Cloud Cover:  5.6  (flood) vs 0.6 (no flood)
+============================================================

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flood Prediction</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #eef5f8; color: #18323d; }
+    main { max-width: 860px; margin: 32px auto; padding: 24px; background: white; border-radius: 10px; box-shadow: 0 3px 18px rgba(0,0,0,.08); }
+    h1 { margin-top: 0; }
+    form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    label { display: flex; flex-direction: column; gap: 5px; font-weight: bold; }
+    input, select { box-sizing: border-box; width: 100%; padding: 9px; border: 1px solid #aebcc3; border-radius: 5px; }
+    button { grid-column: 1 / -1; padding: 11px; border: 0; border-radius: 5px; background: #17789a; color: white; font-size: 16px; cursor: pointer; }
+    .result { margin-top: 20px; padding: 14px; border-radius: 6px; background: #edf7fa; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Flood Prediction System</h1>
+    <form action="/predict" method="post">
+      <label>Max temperature (C)<input name="Max_Temp" type="number" step="any" value="{{ values.Max_Temp if values else '34.4' }}" required></label>
+      <label>Min temperature (C)<input name="Min_Temp" type="number" step="any" value="{{ values.Min_Temp if values else '25.7' }}" required></label>
+      <label>Rainfall (log)<input name="Rainfall" type="number" step="any" value="{{ values.Rainfall if values else '6.24' }}" required></label>
+      <label>Relative humidity (%)<input name="Relative_Humidity" type="number" step="any" value="{{ values.Relative_Humidity if values else '80' }}" required></label>
+      <label>Wind speed (log)<input name="Wind_Speed" type="number" step="any" value="{{ values.Wind_Speed if values else '0.97' }}" required></label>
+      <label>Cloud coverage (0-8)<input name="Cloud_Coverage" type="number" step="any" value="{{ values.Cloud_Coverage if values else '5.6' }}" required></label>
+      <label>Bright sunshine (hours)<input name="Bright_Sunshine" type="number" step="any" value="{{ values.Bright_Sunshine if values else '4.07' }}" required></label>
+      <label>X coordinate<input name="X_COR" type="number" step="any" value="{{ values.X_COR if values else '536809.8' }}" required></label>
+      <label>Y coordinate<input name="Y_COR" type="number" step="any" value="{{ values.Y_COR if values else '510151.9' }}" required></label>
+      <label>Latitude<input name="LATITUDE" type="number" step="any" value="{{ values.LATITUDE if values else '22.7' }}" required></label>
+      <label>Longitude<input name="LONGITUDE" type="number" step="any" value="{{ values.LONGITUDE if values else '90.36' }}" required></label>
+      <label>Altitude (log)<input name="ALT" type="number" step="any" value="{{ values.ALT if values else '1.61' }}" required></label>
+      <label>Period (YYYY.MM)<input name="Period" type="number" step="any" value="{{ values.Period if values else '1949.06' }}" required></label>
+      <label>Station
+        <select name="Station_Name" required>
+          {% for station in stations %}
+          <option value="{{ station }}" {% if values and values.Station_Name == station %}selected{% endif %}>{{ station }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button type="submit">Predict flood risk</button>
+    </form>
+    {% if prediction %}
+    <div class="result">
+      <strong>{{ prediction }}</strong>
+      {% if prob is not none %}<br>Probability: {{ prob }}{% endif %}
+    </div>
+    {% endif %}
+  </main>
+</body>
+</html>
